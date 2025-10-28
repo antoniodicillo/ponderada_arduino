@@ -4,39 +4,7 @@
 
 ## Relatorio
 
-Projeto de semáforo offline com Arduino Uno que reproduz as três fases (verde, amarelo e vermelho) usando três LEDs e temporizações controladas por millis(). O objetivo foi implementar um semáforo simples sem bloqueios (evitando delay()), garantindo transições previsíveis e permitindo fácil ajuste dos tempos de cada fase.
-
-Hardware:
-
-- Arduino Uno, 3 LEDs (verde, amarelo, vermelho) com resistores de 220 ohms em série.
-- Conexões simples com jumpers; pinos digitais 9 (vermelho), 11 (amarelo) e 13 (verde) configurados como saída.
-
-Software:
-
-- Controle de tempo baseado em millis() para não bloquear a execução.
-- Estado representado por variável inteira (state) que determina a fase atual.
-- Intervalos dependem do estado: base de 2000 ms multiplicada pelo valor do estado (resultando em 2000 ms para amarelo, 4000 ms para verde e 6000 ms para vermelho).
-- Transições realizadas apagando o LED anterior e acendendo o correspondente à nova fase.
-
-Funcionamento observado:
-
-- Ao ligar, o sistema inicia em estado definido (amarelo) e realiza ciclos contínuos entre amarelo → vermelho → verde → amarelo.
-- Uso de millis() permite futura extensão (leitura de sensores, comunicação ou interrupções) sem afetar a temporização principal.
-
-Testes e validação:
-
-- Temporizações verificadas visualmente; recomenda-se medir com cronômetro ou osciloscópio para avaliação mais precisa.
-- Testes de robustez devem incluir reinicialização, perda de alimentação e verificação de brilho/resistência dos LEDs.
-
-Possíveis melhorias:
-
-- Ajustar tempos por constantes nomeadas separadas (p.ex. TEMPO_VERDE, TEMPO_AMARELO, TEMPO_VERMELHO) para maior clareza.
-- Implementar máquina de estados explícita com enum para legibilidade.
-- Adicionar botão de pedestre, sensor de presença ou modo manual para enriquecer funcionalidade.
-- Incluir debounce para entradas e persistência de configuração via EEPROM se necessário.
-
-Conclusão:
-Solução simples e funcional para demonstrar controle de fases de semáforo com Arduino sem bloqueios. O código é adequado para atividades didáticas e pode ser estendido facilmente para funcionalidades adicionais.
+Projeto de semáforo offline para Arduino Uno que controla três LEDs (verde, amarelo e vermelho) usando millis() para temporizações não bloqueantes; o sistema realiza transições previsíveis entre as fases amarelo, vermelho e verde com intervalos ajustáveis, permitindo fácil extensão (botões, sensores, EEPROM) e montagem simples em protoboard com jumpers e resistores.
 
 ## Vídeo de demonstração:
 
