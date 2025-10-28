@@ -8,54 +8,60 @@ Projeto de semáforo offline para Arduino Uno que controla três LEDs (verde, am
 
 ## Vídeo de demonstração:
 
-https://youtube.com/shorts/u0INueWsoyM
+https://youtube.com/shorts/m4Vm-y9-5EY
 
 ## Código do arduino:
 
 ```cpp
-const unsigned long intervaloLeitura = 2000;
+const unsigned long intervaloLeitura = 2000; 
 
 unsigned long ultimoTempoLeitura = 0;
 short int state = 1; // 1: Amarelo 2: Verde 3: Vermelho
 
-void setup()
-{
-  pinMode(9, OUTPUT); // Vermelho
-  pinMode(11, OUTPUT); // Amarelo
-  pinMode(13, OUTPUT); // Verde
-  Serial.begin(9600);
+short int ledVermelho = 9;
+short int ledAmarelo = 11;
+short int ledVerde = 13;
+
+// Pointeiro para o led verde
+int* ledAtual = &ledVerde; 
+
+void setup() {
+  pinMode(ledVermelho, OUTPUT);
+  pinMode(ledAmarelo, OUTPUT);
+  pinMode(ledVerde, OUTPUT);
+  
+  digitalWrite(*ledAtual, HIGH); // Liga o primeiro led
 }
 
 void loop()
 {
   unsigned long tempoAtual = millis();
 
-   /*
+   /* 
      Intervalo de leitura depende do estado:
-     1. Amarelo: 2000
+     1. Amarelo: 2000 
      2. Verde: 4000
      3. Vermelho: 6000
-   */
+   */ 
 
    if (tempoAtual - ultimoTempoLeitura >= (intervaloLeitura * state)) {
-        ultimoTempoLeitura = tempoAtual;  // Atualiza o último tempo de leitura
+      ultimoTempoLeitura = tempoAtual;  // Atualiza o último tempo de leitura
 
-        if(state == 1) {
-          // Liga a led vermelha se a led anterior foi amarela
-          state = 3;
-          digitalWrite(11, LOW);
-          digitalWrite(9, HIGH);
-        } else if(state == 2) {
-          // Liga a led amarela se a led anterior foi verde
-          state = 1;
-          digitalWrite(13, LOW);
-          digitalWrite(11, HIGH);
-        } else if(state == 3) {
-          // Liga a led verde se a led anterior foi vermelha
-          state = 2;
-          digitalWrite(9, LOW);
-          digitalWrite(13, HIGH);
-        }
+      digitalWrite(*ledAtual, LOW);
+      Serial.println(*ledAtual);
+
+      if (state == 1) {
+        state = 3;
+        ledAtual = &ledVermelho;  // Pointeiro para o vermelho
+      } else if (state == 2) {
+        state = 1;
+        ledAtual = &ledAmarelo;   // Pointeiro para o Amarelo
+      } else if (state == 3) {
+        state = 2;
+        ledAtual = &ledVerde;     // Pointeiro para o Verde
+      }
+
+      digitalWrite(*ledAtual, HIGH);
     }
 }
 ```
